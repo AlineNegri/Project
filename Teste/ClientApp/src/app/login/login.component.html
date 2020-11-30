@@ -1,0 +1,27 @@
+<h1>Login</h1>
+<div class="submit-form">
+  <div *ngIf="!submitted">
+    <div class="form-group">
+      <label for="title">{{titulo}}</label>
+      <input type="text"
+             class="form-control"
+             id="title"
+             required
+             [(ngModel)]="user.NameLogin"
+             name="title" maxlength="10" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Senha</label>
+      <input class="form-control"
+             id="Senha"
+             required
+             [(ngModel)]="user.Password" type="password"
+             name="description" maxlength="6" />
+    </div>
+
+    <button (click)="Login()" class="btn btn-success">Entrar</button>
+
+    <button (click)="Create()" class="btn btn-success">Criar Usuário</button>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<app-menu></app-menu>
+<h1>{{totulo}}</h1>
+<div class="submit-form">
+  <div *ngIf="!submitted">
+
+    <div class="form-group">
+      <label for="title">Código</label>
+      <input type="text"
+             class="form-control"
+             id="id"
+             required
+             [(ngModel)]="game.id"
+             name="id" readonly="true" typeof="number" />
+    </div>
+
+    <div class="form-group">
+      <label for="title">Nome</label>
+      <input type="text"
+             class="form-control"
+             id="name"
+             required
+             [(ngModel)]="game.name"
+             name="name" />
+    </div>
+
+    <mat-table class="lessons-table mat-elevation-z8" [dataSource]="datasource">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+        <mat-cell *matCellDef="let lesson">{{lesson.id}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+        <mat-cell class="description-cell"
+                  *matCellDef="let lesson">{{lesson.name}}</mat-cell>
+
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+      <ng-container matColumnDef="buttonAlterar">
+        <mat-header-cell *matHeaderCellDef>Alterar</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let lesson">  <button type="button" (click)="Alterar(lesson.id)">Atualizar</button></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="buttonDeletar">
+        <mat-header-cell *matHeaderCellDef>Deletar</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let lesson"><button type="button" (click)="Deletar(lesson.id)">Deletar</button></mat-cell>
+      </ng-container>
+
+    </mat-table>
+
+    <button type="button" (click)="Gravar()" class="btn btn-success">Gravar</button>
+  </div>
+</div>

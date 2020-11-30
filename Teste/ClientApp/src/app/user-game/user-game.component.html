@@ -1,0 +1,74 @@
+<app-menu></app-menu>
+<h1>{{totulo}}</h1>
+<div class="submit-form">
+  <div >
+
+    <div class="form-group">
+      <label for="title">Código</label>
+      <input type="text"
+             class="form-control"
+             id="id"
+             required
+             [(ngModel)]="userGame.id"
+             name="id" readonly="true" typeof="number" />
+    </div>
+    <div class="form-group">
+      <label for="title">Amigo</label>
+      <mat-select [(ngModel)]="userGame.idUser" name="user">
+        <mat-option *ngFor="let user of users" [value]="user.id">
+          {{user.name}}
+        </mat-option>
+      </mat-select>
+    </div>
+
+
+    <div class="form-group">
+      <label for="title">Jogo</label>
+      <mat-select [(ngModel)]="userGame.idGame" name="game">
+        <mat-option *ngFor="let game of games" [value]="game.id">
+          {{game.name}}
+        </mat-option>
+      </mat-select>
+    </div>
+
+    <mat-table class="lessons-table mat-elevation-z8" [dataSource]="datasource">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+        <mat-cell *matCellDef="let lesson">{{lesson.id}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="nameUser">
+        <mat-header-cell *matHeaderCellDef>Amigo</mat-header-cell>
+        <mat-cell class="description-cell"
+                  *matCellDef="let lesson">{{lesson.user.name}}</mat-cell>
+
+      </ng-container>
+
+      <ng-container matColumnDef="nameGame">
+        <mat-header-cell *matHeaderCellDef>Jogo</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let lesson">{{lesson.game.name}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+      <ng-container matColumnDef="buttonAlterar">
+        <mat-header-cell *matHeaderCellDef>Alterar</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let lesson">  <button type="button" (click)="Alterar(lesson.id)">Atualizar</button></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="buttonDeletar">
+        <mat-header-cell *matHeaderCellDef>Deletar</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let lesson"><button type="button" (click)="Deletar(lesson.id)">Deletar</button></mat-cell>
+      </ng-container>
+
+    </mat-table>
+
+    <button type="button" (click)="Gravar()" class="btn btn-success">Gravar</button>
+  </div>
+</div>
