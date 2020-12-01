@@ -1,10 +1,8 @@
-import { async, ComponentFixture, TestBed, fakeAsync, flushMicrotasks } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 //import { Spectator } from '@ngneat/spectator';
 import { CreateUserComponent } from './create-user.component';
-import { UserService, ApiModule } from '../swagger';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { forwardRef } from '@angular/core';
-import { throwError } from 'rxjs';
+import { UserService, ApiModule, User } from '../swagger';
+import { HttpClient, HttpErrorResponse, HttpClientModule } from '@angular/common/http';
 import {
   MatButtonModule,
   MatCardModule,
@@ -19,9 +17,11 @@ import {
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { AppModule } from '../app.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { of, throwError, defer } from 'rxjs';
 
 
-describe('CadastroUsuariosComponent', () => {
+describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
   let fixture: ComponentFixture<CreateUserComponent>;
   // let spectator: Spectator<CadastroUsuariosComponent>;
@@ -40,10 +40,14 @@ describe('CadastroUsuariosComponent', () => {
         MatSidenavModule,
         MatTableModule,
         MatToolbarModule,
+        BrowserModule,
+        HttpClientModule,
         ApiModule,
         RouterModule,
+        AppModule,
       ],
-      declarations: [CreateUserComponent],
+      declarations: [],
+      providers:[]
     });
     fixture = TestBed.createComponent(CreateUserComponent);
     component = fixture.componentInstance; // BannerComponent test instance
@@ -61,10 +65,10 @@ describe('CadastroUsuariosComponent', () => {
 });
 
 describe('UserService', () => {
-  let httpClientSpy: { get: jasmine.Spy };
+  let httpClientSpy: { request: jasmine.Spy };
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['request']);
     TestBed.configureTestingModule({
       imports: [
         MatButtonModule,
@@ -77,12 +81,14 @@ describe('UserService', () => {
         MatSidenavModule,
         MatTableModule,
         MatToolbarModule,
+        BrowserModule,
+        HttpClientModule,
         ApiModule,
         RouterModule,
         AppModule,
       ],
       providers: [
-        { provide: HttpClient, useExisting: forwardRef(() => httpClientSpy) },
+        { provide: HttpClient, useValue: httpClientSpy },
       ]
     });
   });
@@ -92,14 +98,44 @@ describe('UserService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('should retornar the user #1', () => {
+    const service: UserService = TestBed.get(UserService);
+
+    const usuario = <User> {
+      id: 1,
+      name: 'Teste',
+      login: "teste",
+      password: "123456"
+    }
+    
+    httpClientSpy.request.and.returnValue(of(usuario));
+
+    const retorno = service.apiUserGetByIdUserGet(null);
+
+
+    service.apiUserGetByIdUserGet(1).subscribe(
+      usuarioRet => expect(usuarioRet).toEqual(usuario, "não retornou o usuário"),
+      fail
+    );
+
+  });
+
   it('should retornar null when name null', () => {
     const service: UserService = TestBed.get(UserService);
 
+    httpClientSpy.request.and.returnValue(of(null));
+
     const retorno = service.apiUserGetByIdUserGet(null);
-    expect(retorno).toBeNull(); // , 'O retorno não foi null');
+    
+
+    service.apiUserGetByIdUserGet(null).subscribe(
+      usuario => expect(usuario).toBeNull(), // , 'O retorno não foi null');,
+      fail
+    );
+
   });
 
-  it('should retornar null when 404', () => {
+  it('should return an error when the server returns a 404', () => {
     const service: UserService = TestBed.get(UserService);
 
     const errorResponse = new HttpErrorResponse({
@@ -107,10 +143,13 @@ describe('UserService', () => {
       status: 404, statusText: 'Not Found'
     });
 
-    httpClientSpy.get.and.returnValue(throwError(errorResponse));
+    httpClientSpy.request.and.returnValue(throwError(errorResponse));
 
-    const retorno = service.apiUserGetByIdUserGet(1);
-    expect(retorno).toBeNull(); //, 'O retorno não foi null');
+
+    service.apiUserGetByIdUserGet(2).subscribe(
+      usuarios => fail('expected an error, not users'),
+      error => expect(error.message).toContain('404')
+    );
   });
 });
 

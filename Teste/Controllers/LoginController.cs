@@ -16,11 +16,9 @@ namespace Test.Controllers
     public class LoginController : ControllerBase
     {
         private readonly UserRepository _repository;
-        private readonly IConfiguration _config;
-        public LoginController(UserRepository repository, IConfiguration Configuration) : base()
+        public LoginController(UserRepository repository) : base()
         {
             _repository = repository;
-            _config = Configuration;
         }
 
         [HttpPost("login")]

@@ -18,7 +18,7 @@ namespace Repository
             this._dbContext = context;
         }
 
-        public async Task<User> Login(string login, string password)
+        public virtual async Task<User> Login(string login, string password)
         {
             return await _dbContext.Set<User>().Where(x => x.Login == login && x.Password == password).FirstOrDefaultAsync();
         }

@@ -19,6 +19,7 @@ import {
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
+import { HttpClient } from '@angular/common/http';
 
 declare const require: any;
 

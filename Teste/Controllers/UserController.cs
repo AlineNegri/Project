@@ -38,7 +38,8 @@ namespace Teste.Controllers
         //[Authorize]
         public async Task<ActionResult<User>> Create(User use)
         {
-            return Ok(await _repository.Add(use));
+            var retorno = await _repository.Add(use);
+            return Ok(retorno);
         }
 
         [HttpDelete("DeleteUser")]

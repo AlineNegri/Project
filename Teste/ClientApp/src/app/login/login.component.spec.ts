@@ -17,6 +17,8 @@ import {
 import { RouterModule } from '@angular/router';
 import { ApiModule } from '../swagger';
 import { AppModule } from '../app.module';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -35,11 +37,13 @@ describe('LoginComponent', () => {
         MatSidenavModule,
         MatTableModule,
         MatToolbarModule,
+        BrowserModule,
+        HttpClientModule,
         ApiModule,
         RouterModule,
         AppModule,
       ],
-      declarations: [ LoginComponent ]
+      declarations: []
     })
     .compileComponents();
   }));

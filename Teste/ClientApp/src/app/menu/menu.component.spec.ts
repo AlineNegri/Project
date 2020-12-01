@@ -17,6 +17,9 @@ import {
 import { MenuComponent } from './menu.component';
 import { ApiModule } from '../swagger';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { AppModule } from '../app.module';
+import { BrowserModule } from '@angular/platform-browser';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -24,7 +27,7 @@ describe('MenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MenuComponent],
+      declarations: [],
       imports: [
         MatButtonModule,
         MatCardModule,
@@ -36,8 +39,11 @@ describe('MenuComponent', () => {
         MatSidenavModule,
         MatTableModule,
         MatToolbarModule,
+        BrowserModule,
+        HttpClientModule,
         ApiModule,
         RouterModule,
+        AppModule,
       ],
     }).compileComponents();
   }));

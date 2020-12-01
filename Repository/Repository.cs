@@ -18,7 +18,7 @@ namespace Repository
 
         public abstract bool Validation(TEntity entity); 
         
-        public async Task<TEntity> Add(TEntity entity)
+        public virtual async Task<TEntity> Add(TEntity entity)
         {
             try
             {
