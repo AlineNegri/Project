@@ -58,7 +58,9 @@ namespace Teste
                 };
             });
 
-            services.AddDbContext<TestDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            // services.AddDbContext<TestDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DbConnection"]));
+            services.AddDbContext<TestDbContext>(options => options.UseSqlServer("server=sqldata;database=test;user id=sa; password=EpiLef505050;"));
+            // services.AddDbContext<TestDbContext>(options => options.UseSqlServer("server=.;database=test;user id=sa; password=epilef;"));
 
             services.AddScoped<UserRepository>();
             services.AddScoped<GameRepository>();
@@ -70,6 +72,7 @@ namespace Teste
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

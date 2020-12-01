@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms' 
+import { ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -32,7 +32,11 @@ import { AuthService } from './login/auth.service';
 import { NoLogedGuardGuard } from './guards/no-loged-guard.guard';
 import { LogedGuardGuard } from './guards/loged-guard.guard';
 
-
+export function configureApi() {
+  return new Configuration({
+    basePath: "."
+  });
+}
 
 @NgModule({
   declarations: [
@@ -51,11 +55,7 @@ import { LogedGuardGuard } from './guards/loged-guard.guard';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    ApiModule.forRoot(() => {
-      return new Configuration({
-        basePath: "http://localhost:52647"
-      });
-    }),
+    ApiModule.forRoot(configureApi),
     MatButtonModule,
     MatInputModule,
     MatCardModule,

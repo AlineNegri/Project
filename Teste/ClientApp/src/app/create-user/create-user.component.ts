@@ -10,11 +10,13 @@ import { AuthService } from '../login/auth.service';
 export class CreateUserComponent implements OnInit {
 
   datasource = [];
-  displayedColumns = ['id', 'name', 'login', 'buttonAlterar','buttonDeletar'];
+  displayedColumns = ['id', 'name', 'login', 'buttonAlterar', 'buttonDeletar'];
 
   user: User = <User>{}
   login: Login = <Login>{};
-  loged: boolean = false;
+  get loged(): boolean {
+    return this.auth.bearer ? true : false;
+  }
   public constructor(private uUseService: UserService, private auth: AuthService) {
   }
 
@@ -28,7 +30,7 @@ export class CreateUserComponent implements OnInit {
 
 
   public GetAllUser() {
-  this.uUseService.apiUserGetAllUserGet().toPromise().then((result) => {
+    this.uUseService.apiUserGetAllUserGet().toPromise().then((result) => {
       this.datasource = result;
     }).catch(() => {
     });
@@ -54,11 +56,11 @@ export class CreateUserComponent implements OnInit {
       this.uUseService.apiUserCreatePost(this.user).toPromise().then(() => {
         this.Clean();
         alert("Amigo inserido!!");
-   
+
       }).catch(() => {
         alert("Favor verifique o cadastro");
       });
- 
+
     }
   }
 
@@ -91,17 +93,6 @@ export class CreateUserComponent implements OnInit {
 
     this.user = <User>{};
     this.GetAllUser();
-}
-
-public Loged(){
-
-  this.login.nameLogin = this.user.login;
-  this.login.password = this.user.password;
-  this.auth.Login(this.login).then((result) => {
-    if (result) {
-      this.loged = true;
-    }
-  });
-}
+  }
 }
 
